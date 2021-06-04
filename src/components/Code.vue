@@ -1,65 +1,31 @@
 <template>
   <div>
     <section>
-      <v-ace-editor
-        v-model:value="content"
-        @init="editorInit"
-        :lang="lang"
-        theme="solarized_dark"
-        :style="code"
-        :options="options"
-      />
+      <Editor />
       <div class="out">{{ content }}</div>
     </section>
-    <!-- <button>👋 Hello</button> -->
-    <select v-model="language" name="select" id="select">
+    <button>⚡RUN</button>
+    <!-- <select v-model="language" name="select" id="select">
       <option value="javascript">javascript</option>
       <option value="python">python</option>
       <option value="html">html</option>
-    </select>
-    {{ lang }}
+    </select> -->
   </div>
 </template>
 
 <script>
-import { VAceEditor } from "vue3-ace-editor";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/theme-solarized_dark";
-import "ace-builds/src-noconflict/mode-html";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/ext-language_tools";
-
+import Editor from './Editor';
 export default {
   name: "Code",
+  components: {
+    Editor,
+  },
   data() {
     return {
-      lang: "javascript",
-      content: "",
-      code: {
-        flex: 1,
-        height: "300px",
-        width: "400px",
-      },
-      options: {
-        fontSize: 16,
-        highlightActiveLine: true,
-        showLineNumbers: true,
-        tabSize: 4,
-        showPrintMargin: false,
-        showGutter: true,
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        enableSnippets: true
-      },
+      
     };
   },
-  components: {
-    VAceEditor,
-  },
   methods: {
-    editorInit() {
-      return true;
-    },
   },
   computed: {
     language: {
@@ -68,7 +34,7 @@ export default {
       },
       set(value) {
         this.lang = value;
-      },
+      }
     },
   },
 };
