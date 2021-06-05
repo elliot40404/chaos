@@ -14,12 +14,13 @@
 import { VAceEditor } from "vue3-ace-editor";
 import "ace-builds/src-noconflict/theme-solarized_dark";
 import "ace-builds/src-noconflict/mode-javascript";
-
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/ext-searchbox";
+import "ace-builds/src-noconflict/ext-emmet";
 export default {
   name: "Editor",
   data() {
     return {
-      content: "console.log('hello world)",
       code: {
         flex: 1,
         height: "100%",
@@ -40,14 +41,11 @@ export default {
     };
   },
   created() {
-    require("ace-builds/src-noconflict/ext-language_tools");
-    require("ace-builds/src-noconflict/ext-searchbox");
     require("ace-builds/src-noconflict/mode-python");
     require("ace-builds/src-noconflict/mode-r");
     require("ace-builds/src-noconflict/mode-typescript");
     require("ace-builds/src-noconflict/mode-java");
     require("ace-builds/src-noconflict/mode-html");
-    require("ace-builds/src-noconflict/ext-emmet");
     require("ace-builds/src-noconflict/mode-rust");
     require("ace-builds/src-noconflict/mode-csharp");
     require("ace-builds/src-noconflict/mode-c_cpp");
@@ -74,6 +72,14 @@ export default {
   computed: {
     language() {
       return this.$store.getters.language;
+    },
+    content: {
+      get() {
+        return this.$store.getters.code
+      },
+      set(value) {
+        this.$store.dispatch('setCode', value)
+      }
     },
   },
 };

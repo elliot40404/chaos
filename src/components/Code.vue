@@ -47,5 +47,6 @@ export default {
   background: #000;
   padding: 20px;
   text-align: left;
+  white-space: pre-wrap;
 }
 </style>

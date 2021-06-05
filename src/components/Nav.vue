@@ -2,13 +2,16 @@
   <nav>
     <ul>
       <li><h1>CHAOS</h1></li>
-      <li><button class="button">⚡RUN</button></li>
+      <li><button @click="run" class="button">⚡RUN</button></li>
       <li>
         <select class="button" v-model="language" name="select" id="select">
           <option hidden disabled selected value="">Select a language</option>
-          <option value="javascript">javascript</option>
-          <option value="python">python</option>
-          <option value="html">html</option>
+          <option
+            v-for="(lang, index) in languages"
+            :key="index"
+            :value="lang.language"
+            >{{ lang.language }}</option
+          >
         </select>
       </li>
     </ul>
@@ -16,9 +19,27 @@
 </template>
 
 <script>
+import stripAnsi from "strip-ansi";
 export default {
   name: "Nav",
+  data() {
+    return {
+      // languages: []
+    }
+  },
+  mounted() {
+    fetch("https://emkc.org/api/v2/piston/runtimes")
+      .then((res) => res.json())
+      .then((data) => {
+        // this.languages = data
+        this.$store.dispatch('setLangs', data)
+        })
+      .catch(console.log);
+  },
   computed: {
+    languages() {
+      return this.$store.getters.languages
+    },
     language: {
       get() {
         return this.$store.getters.language;
@@ -27,7 +48,36 @@ export default {
         this.$store.dispatch("setLang", value);
       },
     },
+    code() {
+      return {
+        language: this.$store.getters.language,
+        version: this.$store.getters.version,
+        files: [
+          {
+            content: this.$store.getters.code,
+          },
+        ],
+      };
+    }
   },
+  methods: {
+    async run() {
+      console.log(this.code);
+      await fetch("https://emkc.org/api/v2/piston/execute", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.code),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // this.result = stripAnsi(data.run?.output);
+          this.$store.dispatch('setOutput', stripAnsi(data.run?.output));
+        })
+        .catch(console.log);
+    },
+  }
 };
 </script>
 
@@ -59,5 +109,6 @@ h1 {
   color: #ffffff;
   font-size: 18px;
   width: max-content;
+  cursor: pointer;
 }
 </style>
