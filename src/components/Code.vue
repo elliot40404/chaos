@@ -2,7 +2,7 @@
   <div class="container">
     <Editor class="edit" />
     <div ref="panel" class="output">
-      <div class="terminal">{{output}}</div>
+      <textarea readonly class="terminal">{{output}}</textarea>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
   right: 0;
   background: #0000003b;
   height: calc(100vh - 60px);
-  width: 500px;
+  width: 50vw;
   resize: horizontal;
   // cursor: ew-resize;
   z-index: 10;
@@ -40,6 +40,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 .terminal {
   height: 80%;
@@ -48,5 +49,7 @@ export default {
   padding: 20px;
   text-align: left;
   white-space: pre-wrap;
+  overflow: auto;
+  color: white;
 }
 </style>
