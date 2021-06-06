@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul>
-      <li><h1>CHAOS</h1></li>
+      <li><h1><router-link to="/">CHAOS</router-link></h1></li>
       <li><button @click="run" class="button">⚡RUN</button></li>
       <li>
         <button @click="$refs.file.click()" class="button">Upload</button>
@@ -37,7 +37,6 @@ export default {
     fetch("https://emkc.org/api/v2/piston/runtimes")
       .then((res) => res.json())
       .then((data) => {
-        // this.languages = data
         this.$store.dispatch("setLangs", data);
       })
       .catch(console.log);
@@ -90,7 +89,6 @@ export default {
       })
         .then((res) => res.json())
         .then((data) => {
-          // this.result = stripAnsi(data.run?.output);
           this.$store.dispatch("setOutput", stripAnsi(data.run?.output));
         })
         .catch(console.log);
@@ -127,6 +125,7 @@ ul {
 }
 h1 {
   font-size: 2rem;
+  text-decoration: none;
 }
 .button {
   border: none;

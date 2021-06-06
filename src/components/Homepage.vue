@@ -143,6 +143,7 @@ main {
       padding: 10px;
       color: $primary;
       margin: 20px 0;
+      letter-spacing: 2px;
     }
   }
   .right {
