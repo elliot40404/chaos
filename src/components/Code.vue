@@ -33,7 +33,7 @@ export default {
   background: #0000003b;
   height: calc(100vh - 60px);
   width: 50vw;
-  resize: horizontal;
+  // resize: horizontal;
   // cursor: ew-resize;
   z-index: 10;
   display: flex;
@@ -51,5 +51,6 @@ export default {
   white-space: pre-wrap;
   overflow: auto;
   color: white;
+  resize: none;
 }
 </style>
