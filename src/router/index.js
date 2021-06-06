@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Index from '../views/Index.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Index from '../views/Index.vue';
+import Home from '../views/Home.vue';
 
 const routes = [
   {
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/editor',
     name: 'Home',
-    component: import(/* webpackChunkName: "home" */ '../views/Home.vue')
+    component: Home
   }
 ]
 
