@@ -4,8 +4,9 @@
       <li><h1>CHAOS</h1></li>
       <li><button @click="run" class="button">⚡RUN</button></li>
       <li>
-        <button @click="($refs.file.click())" class="button">Upload</button>
-        <input @change="file" type="file" id="file" ref="file" name="file"/>
+        <button @click="$refs.file.click()" class="button">Upload</button>
+        <a v-if="(content !== '')" :href="dataUri" download="code" class="button">Save</a>
+        <input @change="file" type="file" id="file" ref="file" name="file" />
       </li>
       <li>
         <select class="button" v-model="language" name="select" id="select">
@@ -14,8 +15,9 @@
             v-for="(lang, index) in languages"
             :key="index"
             :value="lang.language"
-            >{{ lang.language }}</option
           >
+            {{ lang.language }}
+          </option>
         </select>
       </li>
     </ul>
@@ -28,21 +30,21 @@ export default {
   name: "Nav",
   data() {
     return {
-      // languages: []
-    }
+      dataUri: ""
+    };
   },
   mounted() {
     fetch("https://emkc.org/api/v2/piston/runtimes")
       .then((res) => res.json())
       .then((data) => {
         // this.languages = data
-        this.$store.dispatch('setLangs', data)
-        })
+        this.$store.dispatch("setLangs", data);
+      })
       .catch(console.log);
   },
   computed: {
     languages() {
-      return this.$store.getters.languages
+      return this.$store.getters.languages;
     },
     language: {
       get() {
@@ -51,6 +53,9 @@ export default {
       set(value) {
         this.$store.dispatch("setLang", value);
       },
+    },
+    content() {
+      return this.$store.getters.code;
     },
     code() {
       return {
@@ -62,7 +67,16 @@ export default {
           },
         ],
       };
+    },
+    mime() {
+      return this.$store.getters.mime
     }
+  },
+  watch: {
+    content() {
+      const uri = new Blob([this.content], {type: this.mime});
+      this.dataUri = URL.createObjectURL(uri)
+    },
   },
   methods: {
     async run() {
@@ -77,22 +91,22 @@ export default {
         .then((res) => res.json())
         .then((data) => {
           // this.result = stripAnsi(data.run?.output);
-          this.$store.dispatch('setOutput', stripAnsi(data.run?.output));
+          this.$store.dispatch("setOutput", stripAnsi(data.run?.output));
         })
         .catch(console.log);
     },
     file(e) {
       {
-        this.$store.dispatch('setMime', e.target.files[0].type);
+        this.$store.dispatch("setMime", e.target.files[0].type);
         const fr = new FileReader();
         fr.onload = () => {
           const data = fr.result;
-          this.$store.dispatch('setCode', data);
+          this.$store.dispatch("setCode", data);
         };
         fr.readAsText(e.target.files[0]);
       }
-    },
-  }
+    }
+  },
 };
 </script>
 
@@ -129,6 +143,12 @@ h1 {
 li {
   input {
     display: none;
+  }
+  button {
+    margin: 0 20px;
+  }
+  a {
+    text-decoration: none
   }
 }
 </style>

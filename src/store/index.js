@@ -6,7 +6,8 @@ export default createStore({
     language: "",
     content: "",
     output: "$~ Output here",
-    version: ""
+    version: "",
+    mimeType: ""
   },
   mutations: {
     setLang(state, value) {
@@ -24,6 +25,9 @@ export default createStore({
     },
     setCode(state, value) {
       state.content = value;
+    },
+    setMime(state, value) {
+      state.mimeType = value;
     }
   },
   actions: {
@@ -39,6 +43,9 @@ export default createStore({
     },
     setCode({commit}, value) {
       commit('setCode', value);
+    },
+    setMime({commit}, value) {
+      commit('setMime', value);
     }
   },
   getters: {
@@ -53,6 +60,9 @@ export default createStore({
     },
     output(state) {
       return state.output
+    },
+    mime(state) {
+      return state.mimeType
     },
     code(state) {
       return state.content
