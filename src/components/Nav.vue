@@ -4,6 +4,10 @@
       <li><h1>CHAOS</h1></li>
       <li><button @click="run" class="button">⚡RUN</button></li>
       <li>
+        <button @click="($refs.file.click())" class="button">Upload</button>
+        <input type="file" id="file" ref="file" name="file"/>
+      </li>
+      <li>
         <select class="button" v-model="language" name="select" id="select">
           <option hidden disabled selected value="">Select a language</option>
           <option
@@ -110,5 +114,10 @@ h1 {
   font-size: 18px;
   width: max-content;
   cursor: pointer;
+}
+li {
+  input {
+    display: none;
+  }
 }
 </style>
