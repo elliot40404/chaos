@@ -5,7 +5,7 @@
       <li><button @click="run" class="button">⚡RUN</button></li>
       <li>
         <button @click="($refs.file.click())" class="button">Upload</button>
-        <input type="file" id="file" ref="file" name="file"/>
+        <input @change="file" type="file" id="file" ref="file" name="file"/>
       </li>
       <li>
         <select class="button" v-model="language" name="select" id="select">
@@ -80,6 +80,17 @@ export default {
           this.$store.dispatch('setOutput', stripAnsi(data.run?.output));
         })
         .catch(console.log);
+    },
+    file(e) {
+      {
+        this.$store.dispatch('setMime', e.target.files[0].type);
+        const fr = new FileReader();
+        fr.onload = () => {
+          const data = fr.result;
+          this.$store.dispatch('setCode', data);
+        };
+        fr.readAsText(e.target.files[0]);
+      }
     },
   }
 };
